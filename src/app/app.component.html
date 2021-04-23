@@ -1,0 +1,31 @@
+<hello name="{{ name }}"></hello>
+<p>
+	Start editing to see some magic happen :)
+</p>
+
+<!-- ng-template -- virtual element and 
+ng-container -- logical element
+    1. Render as comment and display its inner element.
+ -->
+
+
+<!-- The below create extra two div which is create big issue in large applications -->
+
+<div *ngFor="let client of clients">
+	<p *ngIf="client?.paid"> {{client.name}} {{client.money}} </p>
+</div>
+
+<!-- Solution of above problem is -->
+<ng-container *ngFor="let client of clients">
+	<p *ngIf="client?.paid">{{client.name}} {{client.money}}</p>
+</ng-container>
+
+<!-- internal convertion of above code by angular -->
+<ng-template ngFor let-client [ngForOf]="clients">
+	<ng-container>
+		<ng-template [ngIf]="client.paid">
+			<p>{{client.name}} {{client.money}}</p>
+
+		</ng-template>
+	</ng-container>
+</ng-template>
